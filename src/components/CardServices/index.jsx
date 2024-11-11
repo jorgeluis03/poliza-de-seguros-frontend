@@ -33,7 +33,7 @@ const OurServicesData = [
 ];
 
 
-export default function CardService() {
+export const CardService = () => {
   return (
     <div>
             <div className="container py-24">

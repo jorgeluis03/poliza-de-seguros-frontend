@@ -1,25 +1,24 @@
 import React from 'react'
-import { Navbar } from './components/Navbar'
-import { Hero } from './components/Hero'
-import BgImage from './assets/bg.png'
-import CardService from './components/CardServices'
-
-const bgStyle = {
-  backgroundImage: `url(${BgImage})`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundAttachment: "fixed"
-}
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Home } from './pages/web/Home'
+import { NoPage } from './pages/web/NoPage'
+import { Login } from './pages/web/Login'
+import { Register } from './pages/web/Register'
+import { AdminDashboard } from './pages/admin/AdminDashboard'
+import { UserHome } from './pages/user/UserHome'
 export const App = () => {
   return (
-    <div className="overflow-x-hidden">
-      <div style={bgStyle}>
-        <Navbar />
-        <Hero />
-      </div>
-      <CardService />
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/dashboard' element={<AdminDashboard />} />
+          <Route path='/user-home' element={<UserHome />} />
+          <Route path="/*" element={<NoPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
