@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 export const PolicyFilter = ({ onSearch, onClear }) => {
 
@@ -102,12 +103,12 @@ export const PolicyFilter = ({ onSearch, onClear }) => {
                     >
                         Limpiar
                     </button>
-                    <button
-                        onClick={handleRequest}
+                    <NavLink
+                        to = "/solicitar-poliza"
                         className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-400 transition duration-200"
                     >
                         Solicitar
-                    </button>
+                    </NavLink>
 
                 </div>
             </div>

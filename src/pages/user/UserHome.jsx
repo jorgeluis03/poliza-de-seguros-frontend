@@ -4,6 +4,7 @@ import { Navbar } from '../../components/NavbarGestion'
 import { Header } from '../../components/Header';
 import { PolicyFilter } from '../../components/Filter/PolicyFilter';
 import { UsuariosMock } from '../../mockData/data';
+import { ModalDialog } from '../../components/ModalDialog';
 import { Modal } from '../../components/Modal';
 const menus = [
   {
@@ -22,10 +23,15 @@ const applicant = {
 export const UserHome = () => {
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   // Función para abrir y cerrar el modal
   const toggleModal = () => {
     setShowModal(prev => !prev);
+  };
+
+  const toggleModalDelete = () => {
+    setShowModalDelete(prev => !prev);
   };
 
   return (
@@ -65,7 +71,8 @@ export const UserHome = () => {
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   <button className='py-2 px-6 rounded-md
-                                    border-2 border-red-500 font-semibold hover:scale-105'>
+                                    border-2 border-red-500 font-semibold hover:scale-105'
+                    onClick={toggleModalDelete}>
                     Eliminar
                   </button>
                 </td>
@@ -75,10 +82,22 @@ export const UserHome = () => {
         </table>
       </div>
 
-      {/* <Modal applicant={applicant} /> */}
-      {showModal && (
-        <Modal applicant={applicant} closeModal={toggleModal} />
-      )}
+      {showModal && 
+      <Modal 
+      applicant={applicant} 
+      open={showModal} 
+      setOpen={setShowModal}
+      dialogTitle="Detalles de la Póliza:" />
+      }
+
+      {showModalDelete && 
+      <ModalDialog 
+      open={showModalDelete} 
+      setOpen={setShowModalDelete}
+      dialogTitle="Eliminar Póliza"
+      dialogMessage="¿Estás seguro de eliminar esta póliza?"
+      />}
+
     </div>
   )
 }

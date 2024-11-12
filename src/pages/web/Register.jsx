@@ -86,7 +86,7 @@ export const Register = () => {
             </div>
 
             <div>
-              <NavLink to="/user-home"
+              <NavLink to="/mis-polizas"
                 type="submit"
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white font-semibold bg-primary hover:bg-secondary transition duration-300"
               >

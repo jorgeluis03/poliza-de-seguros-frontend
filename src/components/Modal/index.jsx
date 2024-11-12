@@ -1,50 +1,51 @@
-import React, { useEffect, useState } from 'react'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { InfoRow } from '../InfoRow'
-import { TitleSection } from '../TitleSection'
-
-export const Modal = ({ applicant, closeModal }) => {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    setShow(true);  // Mostrar modal después de que se ha montado
-    return () => setShow(false);  // Limpiar estado al desmontar
-  }, []);
-
+export const Modal = (props) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      {/* Overlay oscuro */}
-      <div
-        className={`fixed inset-0 bg-gray-900 opacity-50 ${show ? 'opacity-50' : 'opacity-0'} transition-opacity duration-300`}
-        onClick={closeModal}
-      ></div>
-      
-      {/* Contenido del modal */}
-      <div
-        className={`relative bg-white shadow-lg rounded-lg max-w-2xl w-full mx-4 p-6 z-10 transition-transform transform ${
-          show ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-        }`}
-        style={{ transitionDuration: '300ms' }}
-      >
-        <TitleSection
-          title="Applicant Information"
-          description="Personal details and application."
-        />
-        <div className="mt-6 border-t border-gray-100">
-          <dl className="divide-y divide-gray-100">
-            <InfoRow label="Full name" value={applicant.fullName} />
-            <InfoRow label="Application for" value={applicant.position} />
-            <InfoRow label="Email address" value={applicant.email} />
-            <InfoRow label="Salary expectation" value={applicant.salary} />
-            <InfoRow label="About" value={applicant.about} />
-          </dl>
+    <Dialog open={props.open} onClose={() => props.setOpen(false)} className="relative z-10">
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+      />
+
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <DialogPanel
+            transition
+            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+          >
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="sm:flex sm:items-start">
+                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
+                    {props.dialogTitle}
+                  </DialogTitle>
+                  <div className="mt-2 border-t border-gray-100">
+                    <dl className="divide-y divide-gray-100">
+                      <InfoRow label="About" value={props.applicant.about} />
+                      <InfoRow label="fullName" value={props.applicant.fullName} />
+                      <InfoRow label="position" value={props.applicant.position} />
+                      <InfoRow label="email" value={props.applicant.email} />
+                      <InfoRow label="salary" value={props.applicant.salary} />
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button
+                type="button"
+                data-autofocus
+                onClick={() => props.setOpen(false)}
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              >
+                Cerrar
+              </button>
+            </div>
+          </DialogPanel>
         </div>
-        <button
-          onClick={closeModal}
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-          Close
-        </button>
       </div>
-    </div>
+    </Dialog>
   )
 }

@@ -6,6 +6,8 @@ import { Login } from './pages/web/Login'
 import { Register } from './pages/web/Register'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
 import { UserHome } from './pages/user/UserHome'
+import { FormPolicy } from './pages/user/FormPolicy'
+import { FormProfile } from './pages/user/FormProfile'
 export const App = () => {
   return (
     <>
@@ -15,7 +17,9 @@ export const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/dashboard' element={<AdminDashboard />} />
-          <Route path='/user-home' element={<UserHome />} />
+          <Route path='/mis-polizas' element={<UserHome />} />
+          <Route path='/solicitar-poliza' element={<FormPolicy />} />
+          <Route path='/perfil' element={<FormProfile />} />
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
