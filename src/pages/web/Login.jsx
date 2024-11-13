@@ -26,7 +26,6 @@ export const Login = () => {
                   id="email"
                   name="email"
                   type="email"
-                  required
                   autoComplete="email"
                   className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Ingresa tu usuario"
@@ -48,7 +47,6 @@ export const Login = () => {
                   id="password"
                   name="password"
                   type="password"
-                  required
                   autoComplete="current-password"
                   className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Ingresa tu contraseña"
