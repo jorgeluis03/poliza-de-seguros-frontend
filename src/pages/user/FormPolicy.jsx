@@ -1,4 +1,17 @@
+import { useState } from "react"
+import { CarForm } from "../../components/Forms/CarForm"
+import { PhoneForm } from "../../components/Forms/PhoneForm"
+import { PropertyForm } from "../../components/Forms/PropertyForm"
+import { NavLink } from "react-router-dom"
 export const FormPolicy = () => {
+
+    const [tipoPoliza, setTipoPoliza] = useState("")
+
+    const handleChange = (e) => {
+        setTipoPoliza(e.target.value)
+        console.log(e.target.value)
+    }
+
     return (
         <form>
             <div className="container">
@@ -10,21 +23,21 @@ export const FormPolicy = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center ">
                             {/* Tipo de Seguro */}
                             <div>
-                                <label htmlFor="insurance-type" className="block text-sm font-medium text-gray-900">
+                                <label htmlFor="tipoPoliza" className="block text-sm font-medium text-gray-900">
                                     Tipo de Seguro
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        id="insurance-type"
-                                        name="insurance-type"
-                                        required
+                                        id="tipoPoliza"
+                                        name="tipoPoliza"
                                         className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                                        onChange={handleChange}
+                                        value={tipoPoliza}
                                     >
-                                        <option>Seguro de Vida</option>
-                                        <option>Seguro de Auto</option>
-                                        <option>Seguro de Salud</option>
-                                        <option>Seguro de Hogar</option>
-                                        <option>Otro</option>
+                                        <option value="">Selecciona el tipo de seguro</option>
+                                        <option value="1">Seguro de Auto</option>
+                                        <option value="2">Seguro de Inmueble</option>
+                                        <option value="3">Seguro de Celular</option>
                                     </select>
                                 </div>
                             </div>
@@ -83,15 +96,20 @@ export const FormPolicy = () => {
                 </div>
             </div>
 
+            {tipoPoliza == 1 && <CarForm />}
+            {tipoPoliza == 2 && <PropertyForm />}
+            {tipoPoliza == 3 && <PhoneForm />}
+
+
             <div className="container mt-6 mb-12 flex items-center justify-end gap-x-6">
-                <button type="button" className="font-semibold text-gray-900">
+                <NavLink to="/my-polices" type="button" className="font-semibold text-gray-900">
                     Cancelar
-                </button>
+                </NavLink>
                 <button
                     type="submit"
                     className="rounded-md bg-indigo-600 px-6 py-2 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    Guardar
+                    Solicitar
                 </button>
             </div>
         </form>

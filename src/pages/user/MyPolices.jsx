@@ -6,6 +6,7 @@ import { PolicyFilter } from '../../components/Filter/PolicyFilter';
 import { UsuariosMock } from '../../mockData/data';
 import { ModalDialog } from '../../components/ModalDialog';
 import { Modal } from '../../components/Modal';
+
 const menus = [
   {
     name: 'Mis Polizas',
@@ -20,18 +21,18 @@ const applicant = {
   salary: "$120,000",
   about: "Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt...",
 };
-export const UserHome = () => {
+
+export const MyPolices = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
 
-  // Función para abrir y cerrar el modal
-  const toggleModal = () => {
-    setShowModal(prev => !prev);
+  const enableModal = () => {
+    setShowModal(!showModal);
   };
 
-  const toggleModalDelete = () => {
-    setShowModalDelete(prev => !prev);
+  const enableModalDelete = () => {
+    setShowModalDelete(!showModalDelete);
   };
 
   return (
@@ -65,14 +66,14 @@ export const UserHome = () => {
                 <td className="px-6 py-4 text-sm text-gray-900">
                   <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300
                                     text-white font-semibold hover:scale-105'
-                    onClick={toggleModal}>
+                    onClick={enableModal}>
                     Editar
                   </button>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   <button className='py-2 px-6 rounded-md
                                     border-2 border-red-500 font-semibold hover:scale-105'
-                    onClick={toggleModalDelete}>
+                    onClick={enableModalDelete}>
                     Eliminar
                   </button>
                 </td>

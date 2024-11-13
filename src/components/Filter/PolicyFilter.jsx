@@ -104,7 +104,7 @@ export const PolicyFilter = ({ onSearch, onClear }) => {
                         Limpiar
                     </button>
                     <NavLink
-                        to = "/solicitar-poliza"
+                        to = "/request-policy"
                         className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-400 transition duration-200"
                     >
                         Solicitar

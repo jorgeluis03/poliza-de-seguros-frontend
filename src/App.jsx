@@ -5,7 +5,7 @@ import { NoPage } from './pages/web/NoPage'
 import { Login } from './pages/web/Login'
 import { Register } from './pages/web/Register'
 import { AdminDashboard } from './pages/admin/AdminDashboard'
-import { UserHome } from './pages/user/UserHome'
+import { MyPolices } from './pages/user/MyPolices'
 import { FormPolicy } from './pages/user/FormPolicy'
 import { FormProfile } from './pages/user/FormProfile'
 export const App = () => {
@@ -16,10 +16,10 @@ export const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/dashboard' element={<AdminDashboard />} />
-          <Route path='/mis-polizas' element={<UserHome />} />
-          <Route path='/solicitar-poliza' element={<FormPolicy />} />
-          <Route path='/perfil' element={<FormProfile />} />
+          <Route path='/users' element={<AdminDashboard />} />
+          <Route path='/my-polices' element={<MyPolices />} />
+          <Route path='/request-policy' element={<FormPolicy />} />
+          <Route path='/profile' element={<FormProfile />} />
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

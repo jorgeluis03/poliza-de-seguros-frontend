@@ -7,6 +7,11 @@ export const Navbar = ({ menus }) => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+
   return (
     <nav className="bg-orange-50 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
@@ -42,12 +47,12 @@ export const Navbar = ({ menus }) => {
                   >
                     Ver Perfil
                   </Link>
-                  <Link
-                    to="/salir"
+                  <button
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={logout}
                   >
                     Cerrar sesión
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
