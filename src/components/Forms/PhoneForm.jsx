@@ -1,6 +1,6 @@
 import React from 'react'
-
-export const PhoneForm = () => {
+import { CONSTANTS } from '../../utility/constants'
+export const PhoneForm = ({ register, errors }) => {
     return (
         <div className="container">
             <div className="border-b mt-12 border-gray-900/10 pb-12">
@@ -10,33 +10,36 @@ export const PhoneForm = () => {
                 <div className="mt-10 grid grid-cols-1 gap-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center ">
                         <div>
-                            <label htmlFor="marca" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="marcaCelular" className="block text-sm font-medium text-gray-900">
                                 Marca
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="marca"
-                                    name="marca"
+                                    id="marcaCelular"
+                                    name="marcaCelular"
                                     type="text"
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa la marca del celular"
+                                    {...register("marcaCelular", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.marcaCelular && <span className="text-red-500">{errors.marcaPhone.message}</span>}
                             </div>
                         </div>
 
                         <div>
-                            <label htmlFor="modelo" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="modeloCelular" className="block text-sm font-medium text-gray-900">
                                 Modelo
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="modelo"
-                                    name="modelo"
+                                    id="modeloCelular"
+                                    name="modeloCelular"
                                     type="text"
-                                    required
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa el modelo del celular"
+                                    {...register("modeloCelular", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.modeloCelular && <span className="text-red-500">{errors.modeloCelular.message}</span>}
                             </div>
                         </div>
                     </div>

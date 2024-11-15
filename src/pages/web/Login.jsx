@@ -28,8 +28,8 @@ export const Login = () => {
   const login = async (payload) => {
     try {
       const response = await api.post('/login', payload);
-      console.log(response.data);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('username', response.data.username);
 
       const decodedToken = jwtDecode(response.data.token);
       const role = decodedToken.role;

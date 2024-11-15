@@ -9,6 +9,7 @@ export const Navbar = ({ menus }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
     window.location.href = '/';
   }
 

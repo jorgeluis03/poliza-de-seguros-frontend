@@ -1,6 +1,6 @@
 import React from 'react'
-
-export const CarForm = () => {
+import { CONSTANTS } from '../../utility/constants'
+export const CarForm = ({ register, errors }) => {
     return (
         <div className="container">
             <div className="border-b mt-12 border-gray-900/10 pb-12">
@@ -10,33 +10,36 @@ export const CarForm = () => {
                 <div className="mt-10 grid grid-cols-1 gap-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center ">
                         <div>
-                            <label htmlFor="marca" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="marcaAuto" className="block text-sm font-medium text-gray-900">
                                 Marca
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="marca"
-                                    name="marca"
+                                    id="marcaAuto"
+                                    name="marcaAuto"
                                     type="text"
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa la marca del auto"
+                                    {...register("marcaAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.marcaAuto && <span className="text-red-500">{errors.marcaAuto.message}</span>}
                             </div>
                         </div>
 
                         <div>
-                            <label htmlFor="modelo" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="modeloAuto" className="block text-sm font-medium text-gray-900">
                                 Modelo
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="modelo"
-                                    name="modelo"
+                                    id="modeloAuto"
+                                    name="modeloAuto"
                                     type="text"
-                                    required
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa el modelo del auto"
+                                    {...register("modeloAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.modeloAuto && <span className="text-red-500">{errors.modeloAuto.message}</span>}
                             </div>
                         </div>
                     </div>
@@ -53,23 +56,26 @@ export const CarForm = () => {
                                     type="text"
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa el número de placa"
+                                    {...register("numeroPlaca", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.numeroPlaca && <span className="text-red-500">{errors.numeroPlaca.message}</span>}
                             </div>
                         </div>
 
                         <div>
-                            <label htmlFor="anio" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="anioAuto" className="block text-sm font-medium text-gray-900">
                                 Año
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="anio"
-                                    name="anio"
+                                    id="anioAuto"
+                                    name="anioAuto"
                                     type="number"
-                                    required
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa el año del auto"
+                                    {...register("anioAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.anioAuto && <span className="text-red-500">{errors.anioAuto.message}</span>}
                             </div>
                         </div>
                     </div>

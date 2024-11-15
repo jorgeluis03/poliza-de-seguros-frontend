@@ -18,6 +18,7 @@ export const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/users' element={<AdminDashboard />} />
           <Route path='/my-polices' element={<MyPolices />} />
+          <Route path='/my-polices/:idPolicy' element={<FormPolicy/>} />
           <Route path='/request-policy' element={<FormPolicy />} />
           <Route path='/profile' element={<FormProfile />} />
           <Route path="/*" element={<NoPage />} />

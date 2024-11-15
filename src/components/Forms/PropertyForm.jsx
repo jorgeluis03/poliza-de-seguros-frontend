@@ -1,14 +1,9 @@
 import React from 'react'
 import { useState } from 'react';
-export const PropertyForm = () => {
+import { CONSTANTS } from '../../utility/constants';
+export const PropertyForm = ({ register, errors, watch }) => {
 
-    const [tipoInmueble, setTipoInmueble] = useState("")
-
-    const handleChange = (e) => {
-        setTipoInmueble(e.target.value)
-        console.log(e.target.value)
-    }
-
+    const tipoInmueble = watch("tipoInmueble")
     return (
         <div className="container">
             <div className="border-b mt-12 border-gray-900/10 pb-12">
@@ -18,17 +13,19 @@ export const PropertyForm = () => {
                 <div className="mt-10 grid grid-cols-1 gap-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center ">
                         <div>
-                            <label htmlFor="direccion" className="block text-sm font-medium text-gray-900">
+                            <label htmlFor="direccionInmueble" className="block text-sm font-medium text-gray-900">
                                 Direccion
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="direccion"
-                                    name="direccion"
+                                    id="direccionInmueble"
+                                    name="direccionInmueble"
                                     type="text"
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                     placeholder="Ingresa la dirección del inmueble"
+                                    {...register("direccionInmueble", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
+                                {errors.direccionInmueble && <span className="text-red-500">{errors.direccionInmueble.message}</span>}
                             </div>
                         </div>
 
@@ -41,14 +38,14 @@ export const PropertyForm = () => {
                                     id="tipoInmueble"
                                     name="tipoInmueble"
                                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
-                                    onChange={handleChange}
-                                    value={tipoInmueble}
+                                    {...register("tipoInmueble", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 >
                                     <option value="">Selecciona el tipo de inmueble</option>
                                     <option value="1">Departamento</option>
                                     <option value="2">Casa</option>
                                     <option value="3">Edificio</option>
                                 </select>
+                                {errors.tipoInmueble && <span className="text-red-500">{errors.tipoInmueble.message}</span>}
                             </div>
                         </div>
                     </div>
