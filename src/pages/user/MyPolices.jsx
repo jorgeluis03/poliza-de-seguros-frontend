@@ -108,7 +108,6 @@ export const MyPolices = () => {
   const handlerEliminar = async () => {
     setIsLoading(true);
     try {
-      
       await api.delete(`/v1/polices/${selectedIdPoliza}`);
       fetchMyPolices(page);
       setShowModalDelete(false);
