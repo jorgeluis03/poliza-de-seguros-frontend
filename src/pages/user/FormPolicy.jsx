@@ -42,8 +42,6 @@ export const FormPolicy = () => {
                     throw new Error("Tipo de póliza desconocido");
             }
             reset({ ...policyData, ...policyDetails });
-            console.log({ ...policyData, ...policyDetails });
-            console.log(tipoPoliza);
         } catch (error) {
             console.error('Error al obtener detalles de la póliza:', error);
         }

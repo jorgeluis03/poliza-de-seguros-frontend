@@ -34,6 +34,7 @@ export const MyPolices = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedIdPoliza, setSelectedIdPoliza] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,7 +45,8 @@ export const MyPolices = () => {
     setShowModal(!showModal);
   };
 
-  const enableModalDelete = () => {
+  const enableModalDelete = (idPoliza) => {
+    setSelectedIdPoliza(idPoliza);
     setShowModalDelete(!showModalDelete);
   };
 
@@ -103,6 +105,20 @@ export const MyPolices = () => {
     navigate(`/my-polices/${idPolicy}`);
   }
 
+  const handlerEliminar = async () => {
+    setIsLoading(true);
+    try {
+      
+      await api.delete(`/v1/polices/${selectedIdPoliza}`);
+      fetchMyPolices(page);
+      setShowModalDelete(false);
+    } catch (error) {
+      console.error('Error deleting policy:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div>
       <Navbar menus={menus} />
@@ -139,7 +155,7 @@ export const MyPolices = () => {
                 <td className="px-6 py-4 text-sm text-gray-900">
                   <button className='py-2 px-6 rounded-md
                                     border-2 border-red-500 font-semibold hover:scale-105'
-                    onClick={enableModalDelete}>
+                    onClick={() => enableModalDelete(police.idPoliza)}>
                     Eliminar
                   </button>
                 </td>
@@ -170,6 +186,7 @@ export const MyPolices = () => {
           setOpen={setShowModalDelete}
           dialogTitle="Eliminar Póliza"
           dialogMessage="¿Estás seguro de eliminar esta póliza?"
+          onConfirm={handlerEliminar}
         />}
 
       {isLoading &&
