@@ -26,16 +26,16 @@ export const FormPolicy = () => {
         try {
             const response = await api.get(`/v1/polices/${id}`);
             const policyData = response.data.payload;
-            tipoPoliza = policyData.tipoPoliza.toString();
+            tipoPoliza = policyData.tipoPoliza;
             let policyDetails = {};
-            switch (parseInt(policyData.tipoPoliza, 10)) {
-                case 1:
+            switch (tipoPoliza) {
+                case 'Auto':
                     policyDetails = await fetchAutoPolicyDetails(id);
                     break;
-                case 2:
+                case 'Inmueble':
                     policyDetails = await fetchInmueblePolicyDetails(id);
                     break;
-                case 3:
+                case 'Celular':
                     policyDetails = await fetchCelularPolicyDetails(id);
                     break;
                 default:
@@ -82,21 +82,21 @@ export const FormPolicy = () => {
         try {
             const body = {
                 usuario: localStorage.getItem('username'),
-                tipoPoliza: parseInt(data.tipoPoliza, 10),
+                tipoPoliza: data.tipoPoliza,
                 montoAsegurado: data.montoAsegurado,
                 fechaInicio: data.fechaInicio,
                 fechaVencimiento: data.fechaVencimiento,
-                ...(data.tipoPoliza == 1 && {
+                ...(data.tipoPoliza == 'Auto' && {
                     marcaAuto: data.marcaAuto,
                     modeloAuto: data.modeloAuto,
                     anioAuto: data.anioAuto,
                     numeroPlaca: data.numeroPlaca,
                 }),
-                ...(data.tipoPoliza == 2 && {
+                ...(data.tipoPoliza == 'Inmueble' && {
                     direccionInmueble: data.direccionInmueble,
                     tipoInmueble: data.tipoInmueble,
                 }),
-                ...(data.tipoPoliza == 3 && {
+                ...(data.tipoPoliza == 'Celular' && {
                     marcaCelular: data.marcaCelular,
                     modeloCelular: data.modeloCelular,
                 })
@@ -138,9 +138,9 @@ export const FormPolicy = () => {
                                         {...register("tipoPoliza", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                     >
                                         <option value="">Selecciona el tipo de seguro</option>
-                                        <option value="1">Seguro de Auto</option>
-                                        <option value="2">Seguro de Inmueble</option>
-                                        <option value="3">Seguro de Celular</option>
+                                        <option value="Auto">Seguro de Auto</option>
+                                        <option value="Inmueble">Seguro de Inmueble</option>
+                                        <option value="Celular">Seguro de Celular</option>
                                     </select>
                                     {errors.tipoPoliza && <span className="text-red-500">{errors.tipoPoliza.message}</span>}
                                 </div>
@@ -202,9 +202,9 @@ export const FormPolicy = () => {
             </div>
 
             <div>
-                {tipoPoliza == "1" && <CarForm register={register} errors={errors} />}
-                {tipoPoliza == "2" && <PropertyForm register={register} errors={errors} watch={watch} />}
-                {tipoPoliza == "3" && <PhoneForm register={register} errors={errors} />}
+                {tipoPoliza == "Auto" && <CarForm register={register} errors={errors} />}
+                {tipoPoliza == "Inmueble" && <PropertyForm register={register} errors={errors} watch={watch} />}
+                {tipoPoliza == "Celular" && <PhoneForm register={register} errors={errors} />}
             </div>
 
             <div className="container mt-6 mb-12 flex items-center justify-end gap-x-6">

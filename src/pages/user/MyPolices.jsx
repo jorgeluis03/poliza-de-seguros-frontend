@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Navbar } from '../../components/NavbarGestion'
+import { Navbar } from '../../components/Navbar'
 import { Header } from '../../components/Header';
 import { PolicyFilter } from '../../components/Filter/PolicyFilter';
 import { ModalDialog } from '../../components/ModalDialog';
@@ -59,24 +59,7 @@ export const MyPolices = () => {
     };
     try {
       const response = await api.get('/v1/polices/by-user', { params });
-      const polices = response.data.content.map((police) => {
-        let tipoDePoliza = '';
-        switch (police.tipoPoliza) {
-          case 1:
-            tipoDePoliza = 'Auto';
-            break;
-          case 2:
-            tipoDePoliza = 'Inmueble';
-            break;
-          case 3:
-            tipoDePoliza = 'Celular';
-            break;
-          default:
-            tipoDePoliza = 'Desconocido';
-            break;
-        }
-        return { ...police, tipoPoliza: tipoDePoliza };
-      });
+      const polices = response.data.content;
       setMyPolices(polices);
       setTotalPages(response.data.totalPages);
       setTotalElements(response.data.totalElements);
@@ -118,11 +101,20 @@ export const MyPolices = () => {
     }
   }
 
+  const onSearch = async (filters) => {
+    const response = await api.get('/v1/polices/search', { params: filters });
+    setMyPolices(response.data);
+  }
+
+  const onClear = () => {
+    fetchMyPolices(page);
+  };
+
   return (
     <div>
       <Navbar menus={menus} />
       <Header currentTitle="Mis Pólizas" bgHeader={"bg-blue-600"} />
-      <PolicyFilter />
+      <PolicyFilter onSearch={onSearch} onClear={onClear} />
       <div className="container overflow-x-auto bg-white shadow-lg rounded-lg max-w-full mx-auto mt-6">
         <table className="min-w-full table-auto">
           <thead className="bg-secondary">
@@ -131,6 +123,7 @@ export const MyPolices = () => {
               <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Tipo Póliza</th>
               <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Inicio</th>
               <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Vencimiento</th>
+              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Monto Asegurado</th>
               <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Estado</th>
               <th></th>
               <th></th>
@@ -143,6 +136,7 @@ export const MyPolices = () => {
                 <td className="px-6 py-4">{police.tipoPoliza}</td>
                 <td className="px-6 py-4">{police.fechaInicio}</td>
                 <td className="px-6 py-4">{police.fechaVencimiento}</td>
+                <td className="px-6 py-4">{`${police.montoAsegurado}.00`}</td>
                 <td className="px-6 py-4">{police.estado}</td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300

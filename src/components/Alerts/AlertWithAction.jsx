@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 export const AlertWithAction = ({ title, message, onClose, onAction }) => {
     const [isVisible, setIsVisible] = useState(true);
 
-    // Maneja el cierre del alert
     const handleClose = () => {
         setIsVisible(false);
         if (onClose) onClose();
     };
 
-    // Si el alert no es visible, no lo renderizamos
     if (!isVisible) return null;
 
     return (

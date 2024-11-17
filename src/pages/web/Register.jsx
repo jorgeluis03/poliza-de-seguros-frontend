@@ -14,10 +14,6 @@ export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   const onSubmit = async (data) => {
     setIsLoading(true);
     const payload = {
@@ -27,17 +23,13 @@ export const Register = () => {
     };
 
     try {
-      await sleep(3000); // Simulando un retraso
-
-      // Simulando el llamado a la API
-      /*const response = await api.post('/signup', payload);
-      console.log(response);*/
+      await api.post('/register', payload);
       setAlertVisible(true);
     } catch (error) {
       console.error(error);
-      setAlertVisible(true); // Muestra la alerta de error
+      setAlertVisible(true);
     } finally {
-      setIsLoading(false); // Finaliza el estado de carga
+      setIsLoading(false);
     }
   };
 
