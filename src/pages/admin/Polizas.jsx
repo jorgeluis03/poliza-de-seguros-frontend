@@ -4,12 +4,11 @@ import { Header } from '../../components/Header';
 import { api } from '../../utility/axios';
 import { Pagination } from '../../components/Paginator';
 import { Spinner } from '../../components/Spinner';
-import { ModalDialog } from '../../components/ModalDialog';
 import { PolicyFilter } from '../../components/Filter/PolicyFilter';
 import { SlideLeft } from '../../utility/animation';
 import { AlertInfo } from '../../components/Alerts/AlertInfo';
-import { Modal } from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 const menus = [
     {
         name: 'Usuarios',
@@ -25,26 +24,13 @@ const menus = [
     }
 ];
 
-const applicant = {
-    fullName: "Margot Foster",
-    position: "Backend Developer",
-    email: "margotfoster@example.com",
-    salary: "$120,000",
-    about: "Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt...",
-};
-
 export const Polizas = () => {
     const [page, setPage] = useState(0);
     const [polizas, setpolizas] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
     const [totalElements, setTotalElements] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [showModalCancelar, setShowModalCancelar] = useState(false);
-    const [showModalAprobar, setShowModalAprobar] = useState(false);
-    const [showModalDetalles, setShowModalDetalles] = useState(false);
-    const [selectedIdPoliza, setSelectedIdPoliza] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [detallesPoliza, setDetallesPoliza] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,7 +42,7 @@ export const Polizas = () => {
         try {
             let params = {
                 page: page,
-                size: 3
+                size: 5
             }
             const response = await api.get('/v1/polices', { params });
             setpolizas(response.data.content);
@@ -84,54 +70,6 @@ export const Polizas = () => {
         }
     };
 
-    const enableModalCancelar = (idPoliza) => {
-        setSelectedIdPoliza(idPoliza)
-        setShowModalCancelar(!showModalCancelar);
-    };
-
-    const enableModalAprobar = (idPoliza) => {
-        setSelectedIdPoliza(idPoliza)
-        setShowModalAprobar(!showModalAprobar);
-    };
-
-
-    const aprobarPoliza = async () => {
-        setIsLoading(true);
-        try {
-            await actualizarEstadoPoliza(selectedIdPoliza, 'VIGENTE');
-        } catch (error) {
-            console.error("Error al aprobar la póliza:", error);
-        } finally {
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000);
-            setShowModalAprobar(false);
-            setIsLoading(false);
-        }
-    }
-    const cancelarPoliza = async () => {
-        setIsLoading(true);
-        try {
-            await actualizarEstadoPoliza(selectedIdPoliza, 'CANCELADO');
-        } catch (error) {
-            console.error("Error al cancelar la póliza:", error);
-        } finally {
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000);
-            setShowModalCancelar(false);
-            setIsLoading(false);
-        }
-    }
-
-    const actualizarEstadoPoliza = async (idPoliza, estado) => {
-        try {
-            await api.patch(`/v1/polices/${idPoliza}`, { estado: estado });
-        } catch (error) {
-            console.error("Error al actualizar el estado de la póliza:", error);
-        }
-    }
-
     const onSearch = async (filters) => {
         try {
             const response = await api.get('/v1/polices/search', { params: filters });
@@ -151,35 +89,6 @@ export const Polizas = () => {
 
     const fetchDetallesPoliza = async (id) => {
         navigate(`/polices/${id}`);
-    };
-
-    const fetchAutoPolicyDetails = async (id) => {
-        const response = await api.get(`/v1/polices/autos/${id}`);
-        const policyData = response.data.payload;
-        return {
-            marcaAuto: policyData.marca,
-            modeloAuto: policyData.modelo,
-            anioAuto: policyData.anio,
-            numeroPlaca: policyData.numeroPlaca,
-        };
-    };
-
-    const fetchInmueblePolicyDetails = async (id) => {
-        const response = await api.get(`/v1/polices/property/${id}`);
-        const policyData = response.data.payload;
-        return {
-            direccionInmueble: policyData.direccion,
-            tipoInmueble: policyData.tipoInmueble,
-        };
-    };
-
-    const fetchCelularPolicyDetails = async (id) => {
-        const response = await api.get(`/v1/polices/phone/${id}`);
-        const policyData = response.data.payload;
-        return {
-            marcaCelular: policyData.marca,
-            modeloCelular: policyData.modelo,
-        };
     };
 
     return (
@@ -221,20 +130,6 @@ export const Polizas = () => {
                                             </svg>
                                         </button>
                                     </td>
-                                    {/* <td className="px-6 py-4 text-sm text-gray-900">
-                                        <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300
-                                    text-white font-semibold hover:scale-105'
-                                            onClick={() => enableModalAprobar(poliza.idPoliza)}>
-                                            Aprobar
-                                        </button>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-900">
-                                        <button className='py-2 px-6 rounded-md
-                                    border-2 border-red-500 font-semibold hover:scale-105'
-                                            onClick={() => enableModalCancelar(poliza.idPoliza)}>
-                                            Cancelar
-                                        </button>
-                                    </td> */}
                                 </tr>
                             ))}
                         </tbody>
@@ -248,26 +143,6 @@ export const Polizas = () => {
                     />
                 </div>
 
-                {showModalCancelar &&
-                    <ModalDialog
-                        open={showModalCancelar}
-                        setOpen={setShowModalCancelar}
-                        dialogTitle="Cancelar Póliza"
-                        dialogMessage="¿Estás seguro de cancelar esta póliza?"
-                        onConfirm={cancelarPoliza}
-                    />
-                }
-
-                {showModalAprobar &&
-                    <ModalDialog
-                        open={showModalAprobar}
-                        setOpen={setShowModalAprobar}
-                        dialogTitle="Aprobar Póliza"
-                        dialogMessage="¿Estás seguro de aprobar esta póliza?"
-                        onConfirm={aprobarPoliza}
-                    />
-                }
-
                 {isLoading &&
                     <Spinner />
                 }
@@ -280,16 +155,6 @@ export const Polizas = () => {
                     className="fixed top-0 left-0 right-0 z-50 p-4">
                     <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
                 </motion.div>
-            }
-
-            {
-                showModalDetalles &&
-                <Modal
-                    open={showModalDetalles}
-                    setOpen={setShowModalDetalles}
-                    detalles={detallesPoliza}
-                />
-                
             }
         </>
     )
