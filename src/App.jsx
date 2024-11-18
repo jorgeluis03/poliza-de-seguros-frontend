@@ -8,6 +8,7 @@ import { Polizas } from './pages/admin/Polizas'
 import { MyPolices } from './pages/user/MyPolices'
 import { FormPolicy } from './pages/user/FormPolicy'
 import { FormProfile } from './pages/user/FormProfile'
+import { DetallesPoliza } from './pages/admin/DetallesPoliza'
 export const App = () => {
   return (
     <>
@@ -17,6 +18,7 @@ export const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/polices' element={<Polizas />} />
+          <Route path='/polices/:idPolicy' element={<DetallesPoliza />} />
           <Route path='/my-polices' element={<MyPolices />} />
           <Route path='/my-polices/:idPolicy' element={<FormPolicy/>} />
           <Route path='/request-policy' element={<FormPolicy />} />

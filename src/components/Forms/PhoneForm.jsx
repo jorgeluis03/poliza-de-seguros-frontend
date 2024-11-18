@@ -22,7 +22,7 @@ export const PhoneForm = ({ register, errors }) => {
                                     placeholder="Ingresa la marca del celular"
                                     {...register("marcaCelular", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.marcaCelular && <span className="text-red-500">{errors.marcaPhone.message}</span>}
+                                {errors.marcaCelular && <span className="text-red-500">{errors.marcaCelular.message}</span>}
                             </div>
                         </div>
 

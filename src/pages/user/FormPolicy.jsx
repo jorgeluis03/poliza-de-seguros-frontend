@@ -157,7 +157,7 @@ export const FormPolicy = () => {
                                         type="number"
                                         className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                         placeholder="Ingresa el monto asegurado"
-                                        {...register("montoAsegurado", { required: CONSTANTS.VALIDATION.REQUIRED })}
+                                        {...register("montoAsegurado", { required: CONSTANTS.VALIDATION.REQUIRED, validate: value => value > 0 || CONSTANTS.VALIDATION.MAYOR_A_CERO })}
                                     />
                                     {errors.montoAsegurado && <span className="text-red-500">{errors.montoAsegurado.message}</span>}
                                 </div>

@@ -6,12 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { CONSTANTS } from '../../utility/constants';
 import { AlertWithAction } from '../../components/Alerts/AlertWithAction';
+import { motion } from 'framer-motion';
+import { SlideLeft } from '../../utility/animation';
+import { AlertInfo } from '../../components/Alerts/AlertInfo';
 
 export const Register = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const password = watch('password');
   const [alertVisible, setAlertVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -23,18 +27,21 @@ export const Register = () => {
     };
 
     try {
+      setIsLoading(true);
       await api.post('/register', payload);
       setAlertVisible(true);
     } catch (error) {
+      setErrorMessage(error.response.data);
       console.error(error);
-      setAlertVisible(true);
     } finally {
+      setTimeout(() => {}, 1000);
       setIsLoading(false);
     }
   };
 
   const handleCloseAlert = () => {
     setAlertVisible(false);
+    setErrorMessage(null);
   };
 
   return (
@@ -153,15 +160,30 @@ export const Register = () => {
       </div>
 
       {alertVisible && (
-        <div className="fixed top-0 left-0 right-0 z-50 p-4">
+        <motion.div
+          variants={SlideLeft(0)}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="fixed top-0 left-0 right-0 z-50 p-4">
           <AlertWithAction
             title="Registro Exitoso"
             message={'Tu cuenta ha sido creada exitosamente. Por favor inicia sesión'}
             onClose={handleCloseAlert}
-            onAction={()=>{navigate('/login')}}
+            onAction={() => { navigate('/login') }}
           />
-        </div>
+        </motion.div>
       )}
+
+      {errorMessage &&
+        <motion.div 
+        variants={SlideLeft(0)}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="fixed top-0 left-0 right-0 z-50 p-4">
+          <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
+        </motion.div>}
     </>
   );
 };

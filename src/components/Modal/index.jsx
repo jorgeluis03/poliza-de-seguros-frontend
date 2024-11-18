@@ -1,9 +1,9 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { InfoRow } from '../InfoRow'
-export const Modal = (props) => {
+export const Modal = ({ open, setOpen, detalles }) => {
   return (
-    <Dialog open={props.open} onClose={() => props.setOpen(false)} className="relative z-10">
+    <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -19,15 +19,17 @@ export const Modal = (props) => {
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                   <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
-                    {props.dialogTitle}
+                    Detalles de la Póliza
                   </DialogTitle>
                   <div className="mt-2 border-t border-gray-100">
                     <dl className="divide-y divide-gray-100">
-                      <InfoRow label="About" value={props.applicant.about} />
-                      <InfoRow label="fullName" value={props.applicant.fullName} />
-                      <InfoRow label="position" value={props.applicant.position} />
-                      <InfoRow label="email" value={props.applicant.email} />
-                      <InfoRow label="salary" value={props.applicant.salary} />
+                      <InfoRow label="Número de Póliza" value={detalles.numeroPoliza} />
+                      <InfoRow label="Tipo de Póliza" value={detalles.tipoPoliza} />
+                      <InfoRow label="Correo del Usuario" value={detalles.usuarioDTO?.correo || 'N/A'} />
+                      <InfoRow label="Monto Asegurado" value={detalles.montoAsegurado} />
+                      <InfoRow label="Fecha de Inicio" value={detalles.fechaInicio} />
+                      <InfoRow label="Fecha de Vencimiento" value={detalles.fechaVencimiento} />
+                      <InfoRow label="Estado" value={detalles.estado} />
                     </dl>
                   </div>
                 </div>
@@ -37,7 +39,7 @@ export const Modal = (props) => {
               <button
                 type="button"
                 data-autofocus
-                onClick={() => props.setOpen(false)}
+                onClick={() => setOpen(false)}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cerrar

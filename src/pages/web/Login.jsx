@@ -8,7 +8,8 @@ import { useForm } from 'react-hook-form';
 import { CONSTANTS } from '../../utility/constants';
 import { api } from '../../utility/axios';
 import { AlertInfo } from '../../components/Alerts/AlertInfo';
-
+import { motion } from 'framer-motion';
+import {SlideLeft} from '../../utility/animation';
 
 export const Login = () => {
 
@@ -37,6 +38,7 @@ export const Login = () => {
 
       role === 'ROLE_ADMIN' ? navigate('/polices') : navigate('/my-polices');
     } catch (error) {
+      console.log(error);
       if (error.response.status === 401) {
         setErrorMessage(error.response.data.message);
       }
@@ -130,9 +132,13 @@ export const Login = () => {
         </div>
       </div>
       {errorMessage &&
-        <div className="fixed top-0 left-0 right-0 z-50 p-4">
+        <motion.div
+        variants={SlideLeft(0)}
+        initial="hidden"
+        animate="visible"
+        className="fixed top-0 left-0 right-0 z-50 p-4">
           <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
-        </div>
+        </motion.div>
       }
     </>
 

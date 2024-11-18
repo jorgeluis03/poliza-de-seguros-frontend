@@ -12,7 +12,7 @@ export const AlertWithAction = ({ title, message, onClose, onAction }) => {
     if (!isVisible) return null;
 
     return (
-        <div className="relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 dark:bg-neutral-950 dark:text-neutral-300" role="alert">
+        <div className="relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 dark:text-neutral-300" role="alert">
             <div className="flex w-full items-center gap-2 bg-green-500/10 p-4">
                 <div className="bg-green-500/15 text-green-500 rounded-full p-1" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-6" aria-hidden="true">
@@ -22,7 +22,7 @@ export const AlertWithAction = ({ title, message, onClose, onAction }) => {
                 <div className="flex flex-col gap-2 ml-2">
                     <div>
                         <h3 className="text-sm font-semibold text-green-500">{title}</h3>
-                        <p className="text-xs font-medium sm:text-sm">{message}</p>
+                        <p className="text-xs font-medium sm:text-sm dark:text-gray-700">{message}</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <button 
@@ -34,7 +34,7 @@ export const AlertWithAction = ({ title, message, onClose, onAction }) => {
                         </button>
                         <button 
                             type="button" 
-                            className="whitespace-nowrap text-center text-sm font-medium tracking-wide text-neutral-600 transition hover:opacity-75 dark:text-neutral-300 active:opacity-100"
+                            className="whitespace-nowrap text-center text-sm font-medium tracking-wide text-gray-950 transition hover:opacity-75 dark:text-gray-700 active:opacity-100"
                             onClick={handleClose}
                         >
                             Cerrar

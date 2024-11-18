@@ -9,21 +9,15 @@ import { api } from '../../utility/axios';
 import { Pagination } from '../../components/Paginator';
 import { Spinner } from '../../components/Spinner';
 import { useNavigate } from 'react-router-dom';
-
+import { motion } from 'framer-motion';
+import { SlideLeft } from '../../utility/animation';
+import { AlertInfo } from '../../components/Alerts/AlertInfo';
 const menus = [
   {
     name: 'Mis Polizas',
     submenu: [],
   }
 ];
-
-const applicant = {
-  fullName: "Margot Foster",
-  position: "Backend Developer",
-  email: "margotfoster@example.com",
-  salary: "$120,000",
-  about: "Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt...",
-};
 
 export const MyPolices = () => {
 
@@ -35,6 +29,7 @@ export const MyPolices = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIdPoliza, setSelectedIdPoliza] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,90 +97,109 @@ export const MyPolices = () => {
   }
 
   const onSearch = async (filters) => {
-    const response = await api.get('/v1/polices/search', { params: filters });
-    setMyPolices(response.data);
+    try {
+      const response = await api.get('/v1/polices/search', { params: filters });
+      setMyPolices(response.data);
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
   }
 
   const onClear = () => {
     fetchMyPolices(page);
   };
 
+  const handleCloseAlert = () => {
+    setErrorMessage(null);
+  };
+
   return (
-    <div>
-      <Navbar menus={menus} />
-      <Header currentTitle="Mis Pólizas" bgHeader={"bg-blue-600"} />
-      <PolicyFilter onSearch={onSearch} onClear={onClear} />
-      <div className="container overflow-x-auto bg-white shadow-lg rounded-lg max-w-full mx-auto mt-6">
-        <table className="min-w-full table-auto">
-          <thead className="bg-secondary">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">N° Póliza</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Tipo Póliza</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Inicio</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Vencimiento</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Monto Asegurado</th>
-              <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Estado</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {myPolices.map((police) => (
-              <tr key={police.idPoliza}>
-                <td className="px-6 py-4">{police.numeroPoliza}</td>
-                <td className="px-6 py-4">{police.tipoPoliza}</td>
-                <td className="px-6 py-4">{police.fechaInicio}</td>
-                <td className="px-6 py-4">{police.fechaVencimiento}</td>
-                <td className="px-6 py-4">{`${police.montoAsegurado}.00`}</td>
-                <td className="px-6 py-4">{police.estado}</td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300
-                                    text-white font-semibold hover:scale-105'
-                    onClick={() => handlerEditar(police.idPoliza)}>
-                    Editar
-                  </button>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  <button className='py-2 px-6 rounded-md
-                                    border-2 border-red-500 font-semibold hover:scale-105'
-                    onClick={() => enableModalDelete(police.idPoliza)}>
-                    Eliminar
-                  </button>
-                </td>
+    <>
+      <div>
+        <Navbar menus={menus} />
+        <Header currentTitle="Mis Pólizas" bgHeader={"bg-blue-600"} />
+        <PolicyFilter onSearch={onSearch} onClear={onClear} />
+        <div className="container overflow-x-auto bg-white shadow-lg rounded-lg max-w-full mx-auto mt-6">
+          <table className="min-w-full table-auto">
+            <thead className="bg-secondary">
+              <tr>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">N° Póliza</th>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Tipo Póliza</th>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Inicio</th>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Vencimiento</th>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Monto Asegurado</th>
+                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Estado</th>
+                <th></th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          totalPages={totalPages}
-          totalElements={totalElements}
-          onNext={handleNextPage}
-          onPrevious={handlePreviousPage}
-          page={page}
-        />
+            </thead>
+            <tbody>
+              {myPolices.map((police) => (
+                <tr key={police.idPoliza}>
+                  <td className="px-6 py-4">{police.numeroPoliza}</td>
+                  <td className="px-6 py-4">{police.tipoPoliza}</td>
+                  <td className="px-6 py-4">{police.fechaInicio}</td>
+                  <td className="px-6 py-4">{police.fechaVencimiento}</td>
+                  <td className="px-6 py-4">{`${police.montoAsegurado}.00`}</td>
+                  <td className="px-6 py-4">{police.estado}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300
+                                    text-white font-semibold hover:scale-105'
+                      onClick={() => handlerEditar(police.idPoliza)}>
+                      Editar
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    <button className='py-2 px-6 rounded-md
+                                    border-2 border-red-500 font-semibold hover:scale-105'
+                      onClick={() => enableModalDelete(police.idPoliza)}>
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination
+            totalPages={totalPages}
+            totalElements={totalElements}
+            onNext={handleNextPage}
+            onPrevious={handlePreviousPage}
+            page={page}
+          />
+        </div>
+
+        {showModal &&
+          <Modal
+            applicant={applicant}
+            open={showModal}
+            setOpen={setShowModal}
+            dialogTitle="Detalles de la Póliza:" />
+        }
+
+        {showModalDelete &&
+          <ModalDialog
+            open={showModalDelete}
+            setOpen={setShowModalDelete}
+            dialogTitle="Eliminar Póliza"
+            dialogMessage="¿Estás seguro de eliminar esta póliza?"
+            onConfirm={handlerEliminar}
+          />}
+
+        {isLoading &&
+          <Spinner />
+        }
+
       </div>
-
-      {showModal &&
-        <Modal
-          applicant={applicant}
-          open={showModal}
-          setOpen={setShowModal}
-          dialogTitle="Detalles de la Póliza:" />
+      {errorMessage &&
+        <motion.div
+          variants={SlideLeft(0)}
+          initial="hidden"
+          animate="visible"
+          className="fixed top-0 left-0 right-0 z-50 p-4">
+          <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
+        </motion.div>
       }
-
-      {showModalDelete &&
-        <ModalDialog
-          open={showModalDelete}
-          setOpen={setShowModalDelete}
-          dialogTitle="Eliminar Póliza"
-          dialogMessage="¿Estás seguro de eliminar esta póliza?"
-          onConfirm={handlerEliminar}
-        />}
-
-      {isLoading &&
-        <Spinner />
-      }
-
-    </div>
+    </>
   )
 }
