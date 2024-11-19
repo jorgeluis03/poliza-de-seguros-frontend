@@ -2,15 +2,34 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileImg from '../../assets/profile.png';
 import { LogoTitle } from '../Logo';
+import { useNavigate } from 'react-router-dom';
+import { use } from 'framer-motion/m';
 
 export const Navbar = ({ menus }) => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
+  const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     window.location.href = '/';
+  }
+
+  const changePage = (page) => {
+    switch (page) {
+      case 'Usuarios':
+        navigate('/usuarios');
+        break;
+      case 'Pólizas':
+        navigate('/polices');
+        break;
+      case 'Reportes':
+        navigate('/reports');
+        break;
+      default:
+        break
+    }
   }
 
   return (
@@ -23,7 +42,8 @@ export const Navbar = ({ menus }) => {
             <div className="hidden md:flex space-x-6">
               {menus.map((menu, index) => (
                 <div key={index} className="relative">
-                  <button className="font-semibold hover:text-primary hover:border-b-2 border-primary">
+                  <button className="font-semibold hover:text-primary hover:border-b-2 border-primary"
+                  onClick={() => changePage(menu.name)}>
                     {menu.name}
                   </button>
                 </div>

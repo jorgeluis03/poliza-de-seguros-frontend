@@ -184,23 +184,25 @@ export const DetallesPoliza = () => {
                     </dl>
                 </div>
             </div>
+            {detalles.estado == 'PENDIENTE' &&
+                <div className="container mt-6 mb-12 flex items-center justify-end gap-x-6">
+                    <button
+                        type="submit"
+                        className="rounded-md bg-green-600 px-6 py-2 font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={() => enableModalAprobar(detalles.idPoliza)}
+                    >
+                        Aprobar
+                    </button>
+                    <button
+                        type="submit"
+                        className="rounded-md bg-red-600 px-6 py-2 font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={() => enableModalRechazar(detalles.idPoliza)}
+                    >
+                        Rechazar
+                    </button>
+                </div>
+            }
 
-            <div className="container mt-6 mb-12 flex items-center justify-end gap-x-6">
-                <button
-                    type="submit"
-                    className="rounded-md bg-green-600 px-6 py-2 font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => enableModalAprobar(detalles.idPoliza)}
-                >
-                    Aprobar
-                </button>
-                <button
-                    type="submit"
-                    className="rounded-md bg-red-600 px-6 py-2 font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    onClick={() => enableModalRechazar(detalles.idPoliza)}
-                >
-                    Rechazar
-                </button>
-            </div>
 
             {showModalRechazar &&
                 <ModalDialog
