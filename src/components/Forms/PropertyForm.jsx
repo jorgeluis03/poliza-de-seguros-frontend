@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { CONSTANTS } from '../../utility/constants';
+import { ErrorMessage } from '../ErrorMessage';
 export const PropertyForm = ({ register, errors, watch }) => {
 
     const tipoInmueble = watch("tipoInmueble")
@@ -25,7 +26,7 @@ export const PropertyForm = ({ register, errors, watch }) => {
                                     placeholder="Ingresa la dirección del inmueble"
                                     {...register("direccionInmueble", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.direccionInmueble && <span className="text-red-500">{errors.direccionInmueble.message}</span>}
+                                {errors.direccionInmueble && <ErrorMessage error={errors.direccionInmueble}/>}
                             </div>
                         </div>
 
@@ -45,7 +46,7 @@ export const PropertyForm = ({ register, errors, watch }) => {
                                     <option value="2">Casa</option>
                                     <option value="3">Edificio</option>
                                 </select>
-                                {errors.tipoInmueble && <span className="text-red-500">{errors.tipoInmueble.message}</span>}
+                                {errors.tipoInmueble && <ErrorMessage error={errors.tipoInmueble}/>}
                             </div>
                         </div>
                     </div>

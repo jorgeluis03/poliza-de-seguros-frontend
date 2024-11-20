@@ -1,5 +1,6 @@
 import React from 'react'
 import { CONSTANTS } from '../../utility/constants'
+import { ErrorMessage } from '../ErrorMessage'
 export const CarForm = ({ register, errors }) => {
     return (
         <div className="container">
@@ -22,7 +23,7 @@ export const CarForm = ({ register, errors }) => {
                                     placeholder="Ingresa la marca del auto"
                                     {...register("marcaAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.marcaAuto && <span className="text-red-500">{errors.marcaAuto.message}</span>}
+                                {errors.marcaAuto && <ErrorMessage error={errors.marcaAuto}/>}
                             </div>
                         </div>
 
@@ -39,7 +40,7 @@ export const CarForm = ({ register, errors }) => {
                                     placeholder="Ingresa el modelo del auto"
                                     {...register("modeloAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.modeloAuto && <span className="text-red-500">{errors.modeloAuto.message}</span>}
+                                {errors.modeloAuto && <ErrorMessage error={errors.modeloAuto}/>}
                             </div>
                         </div>
                     </div>
@@ -58,7 +59,7 @@ export const CarForm = ({ register, errors }) => {
                                     placeholder="Ingresa el número de placa"
                                     {...register("numeroPlaca", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.numeroPlaca && <span className="text-red-500">{errors.numeroPlaca.message}</span>}
+                                {errors.numeroPlaca && <ErrorMessage error={errors.numeroPlaca}/>}
                             </div>
                         </div>
 
@@ -75,7 +76,7 @@ export const CarForm = ({ register, errors }) => {
                                     placeholder="Ingresa el año del auto"
                                     {...register("anioAuto", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.anioAuto && <span className="text-red-500">{errors.anioAuto.message}</span>}
+                                {errors.anioAuto && <ErrorMessage error={errors.anioAuto}/>}
                             </div>
                         </div>
                     </div>

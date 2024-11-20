@@ -9,6 +9,7 @@ import { AlertWithAction } from '../../components/Alerts/AlertWithAction';
 import { motion } from 'framer-motion';
 import { SlideLeft } from '../../utility/animation';
 import { AlertInfo } from '../../components/Alerts/AlertInfo';
+import { ErrorMessage } from '../../components/ErrorMessage';
 
 export const Register = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
@@ -19,7 +20,6 @@ export const Register = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
     const payload = {
       nombreUsuario: data.username,
       correo: data.email,
@@ -34,7 +34,7 @@ export const Register = () => {
       setErrorMessage(error.response.data);
       console.error(error);
     } finally {
-      setTimeout(() => {}, 1000);
+      setTimeout(() => { setErrorMessage(null) }, 2000);
       setIsLoading(false);
     }
   };
@@ -71,7 +71,7 @@ export const Register = () => {
                     placeholder="Ingresa tu nombre de usuario"
                     {...register('username', { required: CONSTANTS.VALIDATION.REQUIRED })}
                   />
-                  {errors.username && <span className="text-red-500 text-sm font-medium">{errors.username.message}</span>}
+                  {errors.username && <ErrorMessage error={errors.username} />}
                 </div>
               </div>
 
@@ -89,7 +89,7 @@ export const Register = () => {
                     placeholder="Ingresa tu correo electrónico"
                     {...register('email', { required: CONSTANTS.VALIDATION.INVALID_EMAIL })}
                   />
-                  {errors.email && <span className="text-red-500 text-sm font-medium">{errors.email.message}</span>}
+                  {errors.email && <ErrorMessage error={errors.email} />}
                 </div>
               </div>
 
@@ -106,7 +106,7 @@ export const Register = () => {
                     placeholder="Crea una contraseña"
                     {...register('password', { required: CONSTANTS.VALIDATION.INVALID_PASSWORD })}
                   />
-                  {errors.password && <span className="text-red-500 text-sm font-medium">{errors.password.message}</span>}
+                  {errors.password && <ErrorMessage error={errors.password} />}
                 </div>
               </div>
 
@@ -127,7 +127,7 @@ export const Register = () => {
                       validate: value => value === password || 'Las contraseñas no coinciden'
                     })}
                   />
-                  {errors.confirmPassword && <span className="text-red-500 text-sm font-medium">{errors.confirmPassword.message}</span>}
+                  {errors.confirmPassword && <ErrorMessage error={errors.confirmPassword} />}
                 </div>
               </div>
 
@@ -176,14 +176,8 @@ export const Register = () => {
       )}
 
       {errorMessage &&
-        <motion.div 
-        variants={SlideLeft(0)}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="fixed top-0 left-0 right-0 z-50 p-4">
-          <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
-        </motion.div>}
+        <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
+      }
     </>
   );
 };

@@ -2,11 +2,10 @@ import React from 'react'
 import { Navbar } from '../../components/Navbar'
 import { Header } from '../../components/Header';
 import { api } from '../../utility/axios';
+import { FaFileExcel, FaFilePdf } from "react-icons/fa6";
+import { Spinner } from '../../components/Spinner';
+import { useState } from 'react';
 const menus = [
-    {
-        name: 'Usuarios',
-        submenu: [],
-    },
     {
         name: 'Pólizas',
         submenu: [],
@@ -17,30 +16,46 @@ const menus = [
     }
 ];
 export const Reportes = () => {
-    const descargarPolizas = async () => {
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const descargarReportePoliza = async (tipo) => {
         try {
-            const response = await api.get('/v1/reports/polizas', { responseType: 'blob' })
+            setIsLoading(true);
+            let response = null;
+            let fileName = 'ReportePolizas';
+
+            switch (tipo) {
+                case 'pdf':
+                    response = await api.get('/v1/reports/polizas-pdf', { responseType: 'blob' });
+                    fileName += '.pdf';
+                    break;
+                case 'xlsx':
+                    response = await api.get('/v1/reports/polizas-xlsx', { responseType: 'blob' });
+                    fileName += '.xlsx';
+                    break;
+                default:
+                    throw new Error('Tipo de reporte no soportado');
+            }
+
             // Crear una URL para descargar
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
+            link.setAttribute('download', fileName);
 
-            // Nombre del archivo descargado
-            link.setAttribute('download', 'ReportePolizas.pdf');
-
-            // Simular clic en el enlace
             document.body.appendChild(link);
             link.click();
 
-            // Limpiar el enlace y la URL creada
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
-
-            console.log("Reporte de pólizas descargado correctamente");
         } catch (error) {
             console.error("Error al descargar el reporte de pólizas:", error);
+        } finally {
+            setIsLoading(false);
         }
     }
+
     return (
         <>
             <div>
@@ -59,26 +74,14 @@ export const Reportes = () => {
                             <tr>
                                 <td className="px-6 py-4">1</td>
                                 <td className="px-6 py-4">Reporte de Pólizas</td>
-                                <td>
-                                    <button className="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                        onClick={descargarPolizas}>
-                                        Descargar
-                                        <svg className="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                        </svg>
+                                <td className="px-6 py-4 flex space-x-4">
+                                    <button className="inline-flex items-center font-medium text-red-600 hover:underline"
+                                        onClick={() => descargarReportePoliza("pdf")}>
+                                        <FaFilePdf size={24} />
                                     </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="px-6 py-4">2</td>
-                                <td className="px-6 py-4">Reporte de Usuarios</td>
-                                <td>
-                                    <button className="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                        onClick={() => { }}>
-                                        Descargar
-                                        <svg className="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                                        </svg>
+                                    <button className="inline-flex items-center font-medium text-green-600 hover:underline"
+                                        onClick={() => descargarReportePoliza("xlsx")}>
+                                        <FaFileExcel size={24} />
                                     </button>
                                 </td>
                             </tr>
@@ -87,6 +90,10 @@ export const Reportes = () => {
                 </div>
 
             </div>
+
+            {isLoading &&
+                <Spinner />
+            }
         </>
     )
 }

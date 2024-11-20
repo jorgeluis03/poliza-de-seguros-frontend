@@ -1,5 +1,6 @@
 import React from 'react'
 import { CONSTANTS } from '../../utility/constants'
+import { ErrorMessage } from '../ErrorMessage'
 export const PhoneForm = ({ register, errors }) => {
     return (
         <div className="container">
@@ -22,7 +23,7 @@ export const PhoneForm = ({ register, errors }) => {
                                     placeholder="Ingresa la marca del celular"
                                     {...register("marcaCelular", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.marcaCelular && <span className="text-red-500">{errors.marcaCelular.message}</span>}
+                                {errors.marcaCelular && <ErrorMessage error={errors.marcaCelular}/>}
                             </div>
                         </div>
 
@@ -39,7 +40,7 @@ export const PhoneForm = ({ register, errors }) => {
                                     placeholder="Ingresa el modelo del celular"
                                     {...register("modeloCelular", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                 />
-                                {errors.modeloCelular && <span className="text-red-500">{errors.modeloCelular.message}</span>}
+                                {errors.modeloCelular && <ErrorMessage error={errors.modeloCelular}/>}
                             </div>
                         </div>
                     </div>

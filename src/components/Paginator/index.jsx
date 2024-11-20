@@ -26,7 +26,7 @@ export const Pagination = ({ totalPages, totalElements, onNext, onPrevious, page
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <p className="text-sm text-gray-700">
-                        Mostrando <span className="font-medium">{page + 1}</span> de <span className="font-medium">{totalPages}</span> de{' '}
+                        Mostrando página <span className="font-medium">{page + 1}</span> de <span className="font-medium">{totalPages}</span> de{' '}
                         <span className="font-medium">{totalElements}</span> resultados
                     </p>
                 </div>

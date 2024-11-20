@@ -4,13 +4,10 @@ import { Navbar } from '../../components/Navbar'
 import { Header } from '../../components/Header';
 import { PolicyFilter } from '../../components/Filter/PolicyFilter';
 import { ModalDialog } from '../../components/ModalDialog';
-import { Modal } from '../../components/Modal';
 import { api } from '../../utility/axios';
 import { Pagination } from '../../components/Paginator';
 import { Spinner } from '../../components/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { SlideLeft } from '../../utility/animation';
 import { AlertInfo } from '../../components/Alerts/AlertInfo';
 const menus = [
   {
@@ -35,10 +32,6 @@ export const MyPolices = () => {
   useEffect(() => {
     fetchMyPolices(page);
   }, [page]);
-
-  const enableModal = () => {
-    setShowModal(!showModal);
-  };
 
   const enableModalDelete = (idPoliza) => {
     setSelectedIdPoliza(idPoliza);
@@ -102,6 +95,8 @@ export const MyPolices = () => {
       setMyPolices(response.data);
     } catch (error) {
       setErrorMessage(error.response.data.message);
+    } finally {
+      setTimeout(() => { setErrorMessage(null) }, 2000);
     }
   }
 
@@ -119,55 +114,63 @@ export const MyPolices = () => {
         <Navbar menus={menus} />
         <Header currentTitle="Mis Pólizas" bgHeader={"bg-blue-600"} />
         <PolicyFilter onSearch={onSearch} onClear={onClear} />
-        <div className="container overflow-x-auto bg-white shadow-lg rounded-lg max-w-full mx-auto mt-6">
-          <table className="min-w-full table-auto">
-            <thead className="bg-secondary">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">N° Póliza</th>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Tipo Póliza</th>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Inicio</th>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Vencimiento</th>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Monto Asegurado</th>
-                <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Estado</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {myPolices.map((police) => (
-                <tr key={police.idPoliza}>
-                  <td className="px-6 py-4">{police.numeroPoliza}</td>
-                  <td className="px-6 py-4">{police.tipoPoliza}</td>
-                  <td className="px-6 py-4">{police.fechaInicio}</td>
-                  <td className="px-6 py-4">{police.fechaVencimiento}</td>
-                  <td className="px-6 py-4">{`${police.montoAsegurado}.00`}</td>
-                  <td className="px-6 py-4">{police.estado}</td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    <button className='bg-yellow-400 py-2 px-6 rounded-md hover:bg-yellow-300
-                                    text-white font-semibold hover:scale-105'
-                      onClick={() => handlerEditar(police.idPoliza)}>
-                      Editar
-                    </button>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    <button className='py-2 px-6 rounded-md
-                                    border-2 border-red-500 font-semibold hover:scale-105'
-                      onClick={() => enableModalDelete(police.idPoliza)}>
-                      Eliminar
-                    </button>
-                  </td>
+        {myPolices.length == 0 ?
+          <div className="flex justify-center items-center mt-10">
+            <h1 className="text-gray-500 text-2xl">No hay pólizas registradas</h1>
+          </div>
+          :
+          <div className="container overflow-x-auto bg-white shadow-lg rounded-lg max-w-full mx-auto mt-6">
+            <table className="min-w-full table-auto">
+              <thead className="bg-secondary">
+                <tr>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">N° Póliza</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Tipo Póliza</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Inicio</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Fecha Vencimiento</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Monto Asegurado</th>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-white uppercase">Estado</th>
+                  <th></th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            totalPages={totalPages}
-            totalElements={totalElements}
-            onNext={handleNextPage}
-            onPrevious={handlePreviousPage}
-            page={page}
-          />
-        </div>
+              </thead>
+              <tbody>
+                {myPolices.map((police) => (
+                  <tr key={police.idPoliza}>
+                    <td className="px-6 py-4">{police.numeroPoliza}</td>
+                    <td className="px-6 py-4">{police.tipoPoliza}</td>
+                    <td className="px-6 py-4">{new Date(police.fechaInicio).toLocaleDateString('es-ES')}</td>
+                    <td className="px-6 py-4">{new Date(police.fechaVencimiento).toLocaleDateString('es-ES')}</td>
+                    <td className="px-6 py-4">S/. {police.montoAsegurado}.00</td>
+                    <td className="px-6 py-4">{police.estado}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      <button className={`${police.estado === 'RECHAZADO' ? 'bg-yellow-200' : 'bg-yellow-400 hover:bg-yellow-300'} py-2 px-6 rounded-md 
+                    text-white font-semibold hover:scale-105`}
+                        onClick={() => handlerEditar(police.idPoliza)}
+                        disabled={police.estado == 'RECHAZADO'}>
+                        Editar
+                      </button>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      <button className='py-2 px-6 rounded-md
+                                    border-2 border-red-500 font-semibold hover:scale-105'
+                        onClick={() => enableModalDelete(police.idPoliza)}>
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              totalPages={totalPages}
+              totalElements={totalElements}
+              onNext={handleNextPage}
+              onPrevious={handlePreviousPage}
+              page={page}
+            />
+          </div>
+
+        }
 
         {showModal &&
           <Modal
@@ -192,13 +195,7 @@ export const MyPolices = () => {
 
       </div>
       {errorMessage &&
-        <motion.div
-          variants={SlideLeft(0)}
-          initial="hidden"
-          animate="visible"
-          className="fixed top-0 left-0 right-0 z-50 p-4">
-          <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
-        </motion.div>
+        <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
       }
     </>
   )

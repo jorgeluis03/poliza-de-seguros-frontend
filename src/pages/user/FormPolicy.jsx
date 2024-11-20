@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { CONSTANTS } from "../../utility/constants"
 import { api } from "../../utility/axios"
 import { useNavigate, useParams } from "react-router-dom"
+import { ErrorMessage } from "../../components/ErrorMessage"
 
 export const FormPolicy = () => {
 
@@ -142,7 +143,7 @@ export const FormPolicy = () => {
                                         <option value="Inmueble">Seguro de Inmueble</option>
                                         <option value="Celular">Seguro de Celular</option>
                                     </select>
-                                    {errors.tipoPoliza && <span className="text-red-500">{errors.tipoPoliza.message}</span>}
+                                    {errors.tipoPoliza && <ErrorMessage error={errors.tipoPoliza}/>}
                                 </div>
                             </div>
 
@@ -159,7 +160,7 @@ export const FormPolicy = () => {
                                         placeholder="Ingresa el monto asegurado"
                                         {...register("montoAsegurado", { required: CONSTANTS.VALIDATION.REQUIRED, validate: value => value > 0 || CONSTANTS.VALIDATION.MAYOR_A_CERO })}
                                     />
-                                    {errors.montoAsegurado && <span className="text-red-500">{errors.montoAsegurado.message}</span>}
+                                    {errors.montoAsegurado && <ErrorMessage error={errors.montoAsegurado}/>}
                                 </div>
                             </div>
                         </div>
@@ -177,7 +178,7 @@ export const FormPolicy = () => {
                                         className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                         {...register("fechaInicio", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                     />
-                                    {errors.fechaInicio && <span className="text-red-500">{errors.fechaInicio.message}</span>}
+                                    {errors.fechaInicio && <ErrorMessage error={errors.fechaInicio}/>}
                                 </div>
                             </div>
 
@@ -193,7 +194,7 @@ export const FormPolicy = () => {
                                         className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
                                         {...register("fechaVencimiento", { required: CONSTANTS.VALIDATION.REQUIRED })}
                                     />
-                                    {errors.fechaVencimiento && <span className="text-red-500">{errors.fechaVencimiento.message}</span>}
+                                    {errors.fechaVencimiento && <ErrorMessage error={errors.fechaVencimiento}/>}
                                 </div>
                             </div>
                         </div>

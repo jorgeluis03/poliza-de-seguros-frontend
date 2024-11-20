@@ -8,8 +8,7 @@ import { useForm } from 'react-hook-form';
 import { CONSTANTS } from '../../utility/constants';
 import { api } from '../../utility/axios';
 import { AlertInfo } from '../../components/Alerts/AlertInfo';
-import { motion } from 'framer-motion';
-import {SlideLeft} from '../../utility/animation';
+import { ErrorMessage } from '../../components/ErrorMessage';
 
 export const Login = () => {
 
@@ -29,6 +28,7 @@ export const Login = () => {
 
   const login = async (payload) => {
     try {
+      setIsLoading(true);
       const response = await api.post('/login', payload);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
@@ -43,6 +43,7 @@ export const Login = () => {
         setErrorMessage(error.response.data.message);
       }
     } finally {
+      setTimeout(() => { setErrorMessage(null) }, 2000);
       setIsLoading(false);
     }
   };
@@ -66,7 +67,7 @@ export const Login = () => {
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Usuario
+                  Nombre de Usuario
                 </label>
                 <div className="mt-1">
                   <input
@@ -74,10 +75,10 @@ export const Login = () => {
                     name="username"
                     type="text"
                     className="block w-full px-4 py-3 rounded-md shadow-sm border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Ingresa tu usuario"
+                    placeholder="Ingresa tu nombre de usuario"
                     {...register('username', { required: CONSTANTS.VALIDATION.REQUIRED })}
                   />
-                  {errors.username && <span className="text-red-500 text-sm font-medium">{errors.email.message}</span>}
+                  {errors.username && <ErrorMessage error={errors.username} />}
                 </div>
               </div>
 
@@ -100,7 +101,7 @@ export const Login = () => {
                     placeholder="Ingresa tu contraseña"
                     {...register('password', { required: CONSTANTS.VALIDATION.REQUIRED })}
                   />
-                  {errors.password && <span className="text-red-500 text-sm font-medium">{errors.password.message}</span>}
+                  {errors.password && <ErrorMessage error={errors.password} />}
                 </div>
               </div>
 
@@ -132,13 +133,7 @@ export const Login = () => {
         </div>
       </div>
       {errorMessage &&
-        <motion.div
-        variants={SlideLeft(0)}
-        initial="hidden"
-        animate="visible"
-        className="fixed top-0 left-0 right-0 z-50 p-4">
-          <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
-        </motion.div>
+        <AlertInfo message={errorMessage} onClose={handleCloseAlert} />
       }
     </>
 
